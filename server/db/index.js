@@ -1,6 +1,19 @@
-const db = require('./db')
+const {
+  firebase,
+  auth,
+  provider,
+  firestore,
+  realtimeDB,
+  signInWithGoogle,
+  storage
+} = require('./firebase')
 
-// register models
-require('./models')
-
-module.exports = db
+module.exports = {
+  firebase,
+  auth,
+  firestore,
+  realtimeDB,
+  provider,
+  signInWithGoogle,
+  storage
+}
