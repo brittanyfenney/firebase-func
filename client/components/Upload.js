@@ -1,37 +1,45 @@
-import React from 'react'
-import {realtimeDB, storage} from '../../server/db'
+import React, {useEffect} from 'react'
+import {realtimeDB, storage, firestore} from '../../server/db'
 
 /**
  * COMPONENT
  */
-export const Upload = async () => {
-  var storageRef = storage.ref()
 
-  const list = await storageRef.child('images').listAll()
+export const Upload = () => {
+  useEffect(async () => {
+    const storageRef = await storage.ref()
+    const images = await storageRef.child('images')
+    const list = await images.listAll()
+    const items = await list.items
+    const collectionRef = await firestore.collection('image-store')
 
-  console.log(list)
+    items.forEach(async ref => {
+      const url = await ref.getDownloadURL()
+      console.log(url)
+      await collectionRef.add({url: url})
+    })
+  }, [])
+  // var storageRef = storage.ref()
 
-  const storageAll = await storageRef.listAll()
-  console.log(storageAll)
-  const items = storageAll._delegate.items
-  console.log(items)
+  // const images = await storageRef.child('images')
+  // const list = await images.listAll()
+  // const items = await list.items
+  // const collectionRef = await firestore.collection('image-store');
 
-  items.forEach(ref => console.log(ref.getDownloadURL()))
+  // items.forEach(async (ref) => {
+  //   const url = await ref.getDownloadURL()
+  //   console.log(url)
+  //   await collectionRef.add({url: url})
+  //   })
 
-  // let fileNames = ['glow-over-orb-png-30.png',
-  //  'head-crown-tumblr-aesthetic-grunge-grungeaesthetic-png-grunge-tumblr-png-1024_1024.png','kagt14c0mmn21.png']
-
-  //  for (let i = 0; i < fileNames.length; i++) {
-  //    storageRef.child(fileNames[i]).getDownloadURL().then(item => {
-  //     console.log(item)
-  //    })
-
-  //  }
+  //   console.log('images =>',images)
+  // console.log('list =>',list)
+  // console.log('items =>',items)
 
   return (
     <div>
-      <h1>running upload to db!</h1>
-      <img src="https://firebasestorage.googleapis.com/v0/b/capstone-e6ea2.appspot.com/o/Amazing-Quotes-PNG-Image.png" />
+      <h1>adding urls to firestore!</h1>
+      {/* <button onClick={addUrls(items, collectionRef)}>Click to add urls!</button> */}
     </div>
   )
 }

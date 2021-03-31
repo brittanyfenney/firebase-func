@@ -15,7 +15,6 @@ export const UserHome = props => {
       <Link to="/upload">
         <button>Run upload</button>
       </Link>
-      <img src="https://firebasestorage.googleapis.com/v0/b/capstone-e6ea2.appspot.com/o/Amazing-Quotes-PNG-Image.png" />
     </div>
   )
 }
